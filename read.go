@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"regexp"
 	"strings"
 
@@ -13,8 +14,7 @@ import (
 func main() {
 	str, err := ioutil.ReadDir("/mnt/DS/Video/Films")
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatal(err)
 	}
 
 	for i := range str {
@@ -38,13 +38,6 @@ func main() {
 			if err == nil {
 				base.Save(searchString, info, cast)
 			}
-			//if err != nil {
-			//	fmt.Printf("%s - ", searchString)
-			//	fmt.Println(err)
-			//} else {
-			//	fmt.Printf("%s\n--- %s\n", searchString, info.Overview)
-			//	fmt.Printf("%s\n\n", cast.Crew[0].Name)
-			//}
 		}
 	}
 }

@@ -99,13 +99,6 @@ func GetInfo(s string) (*JsonInfo, *JsonCast, error) {
 	ji := &JsonInfo{}
 	ji.JsonInfoDecode(respGet)
 
-	//Results output
-	//fmt.Printf("%s\n", ji.Overview)
-
-	//for i := range ji.Genres {
-	//	fmt.Printf("%s\n", ji.Genres[i].Name)
-	//}
-
 	urlCast, _ := url.Parse("http://api.themoviedb.org/template?api_key=a5c697bcbfb66710e125f672937c78c0&language=ru")
 	urlCast.Path = fmt.Sprint("3/movie/", ID, "/credits")
 	respCast := Request(urlCast.String())
@@ -113,16 +106,5 @@ func GetInfo(s string) (*JsonInfo, *JsonCast, error) {
 	jc := &JsonCast{}
 	jc.JsonCastDecode(respCast)
 
-	//Results output
-	//for i := 0; i < 7; i++ {
-	//	fmt.Printf("%s %s\n", jc.Cast[i].Name, jc.Cast[i].Character)
-	//}
-
-	//for i := range jc.Crew {
-	//	if strings.EqualFold(jc.Crew[i].Job, "Director") {
-	//		fmt.Printf("%s %s\n", jc.Crew[i].Job, jc.Crew[i].Name)
-	//		return
-	//	}
-	//}
 	return ji, jc, nil
 }
