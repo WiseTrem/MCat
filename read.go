@@ -7,8 +7,8 @@ import (
 	"regexp"
 	"strings"
 
-	"MCat/base"
-	"MCat/tmdb"
+	"github.com/WiseTrem/MCat/base"
+	"github.com/WiseTrem/MCat/tmdb"
 )
 
 func main() {

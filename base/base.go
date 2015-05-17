@@ -5,7 +5,7 @@ import (
 	"github.com/boltdb/bolt"
 	"log"
 
-	"MCat/tmdb"
+	"github.com/WiseTrem/MCat/tmdb"
 )
 
 func Save(s string, ji *tmdb.JsonInfo, jc *tmdb.JsonCast) {
