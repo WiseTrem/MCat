@@ -37,6 +37,8 @@ func main() {
 			info, cast, err := tmdb.GetInfo(searchString)
 			if err == nil {
 				base.Save(searchString, info, cast)
+			} else {
+				fmt.Println(err)
 			}
 		}
 	}
