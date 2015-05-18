@@ -15,7 +15,7 @@ type jsonSearch struct {
 	}
 }
 
-type jsonInfo struct {
+type JsonInfo struct {
 	Budget               int
 	Tagline              string
 	Imdb_id              string
@@ -33,7 +33,7 @@ type jsonInfo struct {
 	}
 }
 
-type jsonCast struct {
+type JsonCast struct {
 	Cast []struct {
 		Character    string
 		Name         string
@@ -53,13 +53,13 @@ func (j *jsonSearch) jsonSearchDecode(r []byte) int {
 	return len(j.Results)
 }
 
-func (j *jsonInfo) jsonInfoDecode(r []byte) {
+func (j *JsonInfo) jsonInfoDecode(r []byte) {
 	if err := json.Unmarshal(r, &j); err != nil {
 		fmt.Println(err)
 	}
 }
 
-func (j *jsonCast) jsonCastDecode(r []byte) {
+func (j *JsonCast) jsonCastDecode(r []byte) {
 	if err := json.Unmarshal(r, &j); err != nil {
 		fmt.Println(err)
 	}
@@ -77,7 +77,7 @@ func Request(r string) []byte {
 	return bodyByte
 }
 
-func GetInfo(s string) (*jsonInfo, *jsonCast, error) {
+func GetInfo(s string) (*JsonInfo, *JsonCast, error) {
 	urlSearch, errSearch := url.Parse("http://api.themoviedb.org/3/search/movie?query=template&api_key=a5c697bcbfb66710e125f672937c78c0")
 	if errSearch != nil {
 		log.Fatal(errSearch)
@@ -103,7 +103,7 @@ func GetInfo(s string) (*jsonInfo, *jsonCast, error) {
 	urlGet.Path = fmt.Sprint("3/movie/", id)
 	respGet := Request(urlGet.String())
 
-	ji := &jsonInfo{}
+	ji := &JsonInfo{}
 	ji.jsonInfoDecode(respGet)
 
 	urlCast, errCast := url.Parse("http://api.themoviedb.org/template?api_key=a5c697bcbfb66710e125f672937c78c0&language=ru")
@@ -113,7 +113,7 @@ func GetInfo(s string) (*jsonInfo, *jsonCast, error) {
 	urlCast.Path = fmt.Sprint("3/movie/", id, "/credits")
 	respCast := Request(urlCast.String())
 
-	jc := &jsonCast{}
+	jc := &JsonCast{}
 	jc.jsonCastDecode(respCast)
 
 	return ji, jc, nil

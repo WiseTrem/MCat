@@ -8,7 +8,7 @@ import (
 	"github.com/WiseTrem/MCat/tmdb"
 )
 
-func Save(s string, ji *tmdb.jsonInfo, jc *tmdb.jsonCast) {
+func Save(s string, ji *tmdb.JsonInfo, jc *tmdb.JsonCast) {
 	db, err := bolt.Open("/tmp/TEST.db", 0666, nil)
 	if err != nil {
 		log.Fatal(err)
