@@ -9,13 +9,13 @@ import (
 	"net/url"
 )
 
-type JsonSearch struct {
+type jsonSearch struct {
 	Results []struct {
 		Id int
 	}
 }
 
-type JsonInfo struct {
+type jsonInfo struct {
 	Budget               int
 	Tagline              string
 	Imdb_id              string
@@ -33,7 +33,7 @@ type JsonInfo struct {
 	}
 }
 
-type JsonCast struct {
+type jsonCast struct {
 	Cast []struct {
 		Character    string
 		Name         string
@@ -46,20 +46,20 @@ type JsonCast struct {
 	}
 }
 
-func (j *JsonSearch) JsonSearchDecode(r []byte) int {
+func (j *jsonSearch) jsonSearchDecode(r []byte) int {
 	if err := json.Unmarshal(r, &j); err != nil {
 		fmt.Println(err)
 	}
 	return len(j.Results)
 }
 
-func (j *JsonInfo) JsonInfoDecode(r []byte) {
+func (j *jsonInfo) jsonInfoDecode(r []byte) {
 	if err := json.Unmarshal(r, &j); err != nil {
 		fmt.Println(err)
 	}
 }
 
-func (j *JsonCast) JsonCastDecode(r []byte) {
+func (j *jsonCast) jsonCastDecode(r []byte) {
 	if err := json.Unmarshal(r, &j); err != nil {
 		fmt.Println(err)
 	}
@@ -77,7 +77,7 @@ func Request(r string) []byte {
 	return bodyByte
 }
 
-func GetInfo(s string) (*JsonInfo, *JsonCast, error) {
+func GetInfo(s string) (*jsonInfo, *jsonCast, error) {
 	urlSearch, _ := url.Parse("http://api.themoviedb.org/3/search/movie?query=template&api_key=a5c697bcbfb66710e125f672937c78c0")
 	q := urlSearch.Query()
 	q.Set("query", s)
@@ -85,8 +85,8 @@ func GetInfo(s string) (*JsonInfo, *JsonCast, error) {
 
 	respSearch := Request(urlSearch.String())
 
-	j := &JsonSearch{}
-	if n := j.JsonSearchDecode(respSearch); n == 0 {
+	j := &jsonSearch{}
+	if n := j.jsonSearchDecode(respSearch); n == 0 {
 		return nil, nil, fmt.Errorf("No movie found")
 	}
 
@@ -96,15 +96,15 @@ func GetInfo(s string) (*JsonInfo, *JsonCast, error) {
 	urlGet.Path = fmt.Sprint("3/movie/", ID)
 	respGet := Request(urlGet.String())
 
-	ji := &JsonInfo{}
-	ji.JsonInfoDecode(respGet)
+	ji := &jsonInfo{}
+	ji.jsonInfoDecode(respGet)
 
 	urlCast, _ := url.Parse("http://api.themoviedb.org/template?api_key=a5c697bcbfb66710e125f672937c78c0&language=ru")
 	urlCast.Path = fmt.Sprint("3/movie/", ID, "/credits")
 	respCast := Request(urlCast.String())
 
-	jc := &JsonCast{}
-	jc.JsonCastDecode(respCast)
+	jc := &jsonCast{}
+	jc.jsonCastDecode(respCast)
 
 	return ji, jc, nil
 }
