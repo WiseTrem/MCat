@@ -78,9 +78,9 @@ func Request(r string) []byte {
 }
 
 func GetInfo(s string) (*JsonInfo, *JsonCast, error) {
-	urlSearch, errSearch := url.Parse("http://api.themoviedb.org/3/search/movie?query=template&api_key=a5c697bcbfb66710e125f672937c78c0")
-	if errSearch != nil {
-		log.Fatal(errSearch)
+	urlSearch, err := url.Parse("http://api.themoviedb.org/3/search/movie?query=template&api_key=a5c697bcbfb66710e125f672937c78c0")
+	if err != nil {
+		log.Fatal(err)
 	}
 	q := urlSearch.Query()
 	q.Set("query", s)
@@ -96,9 +96,9 @@ func GetInfo(s string) (*JsonInfo, *JsonCast, error) {
 
 	id := j.Results[0].Id
 
-	urlGet, errGet := url.Parse("http://api.themoviedb.org/template?api_key=a5c697bcbfb66710e125f672937c78c0&language=ru")
-	if errGet != nil {
-		log.Fatal(errGet)
+	urlGet, err := url.Parse("http://api.themoviedb.org/template?api_key=a5c697bcbfb66710e125f672937c78c0&language=ru")
+	if err != nil {
+		log.Fatal(err)
 	}
 	urlGet.Path = fmt.Sprint("3/movie/", id)
 	respGet := Request(urlGet.String())
@@ -106,9 +106,9 @@ func GetInfo(s string) (*JsonInfo, *JsonCast, error) {
 	ji := &JsonInfo{}
 	ji.jsonInfoDecode(respGet)
 
-	urlCast, errCast := url.Parse("http://api.themoviedb.org/template?api_key=a5c697bcbfb66710e125f672937c78c0&language=ru")
-	if errCast != nil {
-		log.Fatal(errCast)
+	urlCast, err := url.Parse("http://api.themoviedb.org/template?api_key=a5c697bcbfb66710e125f672937c78c0&language=ru")
+	if err != nil {
+		log.Fatal(err)
 	}
 	urlCast.Path = fmt.Sprint("3/movie/", id, "/credits")
 	respCast := Request(urlCast.String())
