@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -69,13 +68,19 @@ func (j *JsonCast) jsonCastDecode(r []byte) {
 
 func request(r string) []byte {
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", r, nil)
+	req, err := http.NewRequest("GET", r, nil)
+	if err != nil {
+		fmt.Println(err)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 	defer resp.Body.Close()
-	bodyByte, _ := ioutil.ReadAll(resp.Body)
+	bodyByte, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
 	return bodyByte
 }
 
@@ -123,8 +128,8 @@ func GetInfo(s string) (*JsonInfo, *JsonCast, error) {
 	respSearch := request(urlSearch.String())
 
 	j := &jsonSearch{}
-	if n := j.jsonSearchDecode(respSearch); n == 0 {
-		err := fmt.Errorf(fmt.Sprint(s, " - no movie found"))
+	if j.jsonSearchDecode(respSearch) == 0 {
+		err := fmt.Errorf(s + " - no movie found")
 		return nil, nil, err
 	}
 
