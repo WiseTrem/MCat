@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 )
 
 type jsonSearch struct {
@@ -64,6 +65,7 @@ func (j *JsonCast) jsonCastDecode(r []byte) {
 	if err := json.Unmarshal(r, &j); err != nil {
 		fmt.Println(err)
 	}
+	time.Sleep(1 * time.Second)
 }
 
 func request(r string) []byte {
